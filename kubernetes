@@ -1,0 +1,26 @@
+kubernetes
+
+Here’s a simple explanation of the attributes you mentioned in a deployment.yaml file in Kubernetes:
+
+1. securityContext
+The securityContext section is like the security settings for your app running in a container. It ensures that the container runs in a safe and controlled environment.
+
+readOnlyRootFileSystem:
+
+Imagine your app is in a locked box, and the "root file system" is the inside of that box. If you set readOnlyRootFileSystem to true, you're making sure that no one (not even the app itself) can write or change anything inside that box. This makes your app more secure because it prevents tampering.
+runAsUser:
+
+Every app needs a "user" to run, even inside a container. This attribute tells Kubernetes which user ID the app should run as. By specifying a user ID (like 1000), you're saying, "Run this app as if it were User 1000." This is a security measure to avoid running the app as the root (superuser), which has all the powers and could be risky.
+fsGroup:
+
+This setting is about group permissions. It’s like saying, "This app belongs to Group 2000, and it can share files with other apps that also belong to this group." It ensures that files created by the app are accessible to other containers or processes that share the same group.
+runAsNonRoot:
+
+By setting this to true, you ensure that the app doesn't run as the root user, which has the most powerful privileges. Instead, it runs as a regular, less-privileged user, making your app more secure against certain types of attacks.
+supplementalGroups:
+
+Sometimes, your app might need to belong to more than one group. supplementalGroups is like adding extra group memberships to the app, so it can access shared resources that belong to those groups. You list the group IDs that the app should be part of.
+2. automountServiceAccountToken
+In Kubernetes, a service account is like a special identity that a container can use to interact with the cluster. By default, Kubernetes automatically attaches (or "mounts") a token (like an ID card) to your container, allowing it to access certain cluster resources.
+
+If you set automountServiceAccountToken to false, you're saying, "I don't want my container to automatically have this ID card." This can be a security measure if your app doesn't need to talk to the Kubernetes cluster, reducing the risk of unauthorized access.
